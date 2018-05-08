@@ -23,22 +23,33 @@ class Solution:
     """
 
     def removeDuplicates(self, nums):
-        for index, v in enumerate(nums):
-            i = 0
-            for y in nums[index+1:]:
-                if v !=y:
-                    break
-                if v == y and i < 2:
-                    i = i + 1
-                if i >= 2:
-                    nums.remove(y)
-        nums[:] = nums
+        """
+        # Hint: passed version 1
+            for index, v in enumerate(nums):
+                i = 0
+                for y in nums[index+1:]:
+                    if v != y:
+                        break
+                    if v == y and i < 2:
+                        i = i + 1
+                    if i >= 2:
+                        nums.remove(y)
+            nums[:] = nums
+            return len(nums)
+        """
+        # passed version 2
+        for i in range(len(nums)):
+            if i-1 >= 0 and i+1 < len(nums) and nums[i-1] == nums[i]:
+                while (i+1 < len(nums) and nums[i+1] == nums[i]):
+                    del nums[i+1]
         return len(nums)
             
     def test(self):
         tests = [
             [1,1,1,2,3,4,5],
             [1,1,1,1,2,3,4,5,1],
+            [1,1,1,2,2,2,3,3,4,1],
+            [1,1,1]
         ]
         for x in tests:
             print(u"sample list: {0}, len: {1}".format(x, len(x)))
