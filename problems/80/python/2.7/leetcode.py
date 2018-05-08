@@ -1,3 +1,12 @@
+"""
+problem 80:
+        Given a sorted array nums, 
+        remove the duplicates in-place such that duplicates appeared at most twice and return the new length.
+
+        Do not allocate extra space for another array, 
+        you must do this by modifying the input array in-place with O(1) extra memory.
+"""
+
 class Solution:
     """
     def removeDuplicates(self, nums):
@@ -26,17 +35,16 @@ class Solution:
         nums[:] = nums
         return len(nums)
             
-          
+    def test(self):
+        tests = [
+            [1,1,1,2,3,4,5],
+            [1,1,1,1,2,3,4,5,1],
+        ]
+        for x in tests:
+            print(u"sample list: {0}, len: {1}".format(x, len(x)))
+            result = self.removeDuplicates(x)
+            print(u'after remove duplucates: {0}, len: {1}'.format(x, len(x)))
+            print(u'=======================================================')
 
-""" TEST """
-list1 = [1,1,1,2,3,4,5]
-list2 = [1,1,1,1,2,3,4,5,1]
-
-sol = Solution()
-print('test case => ', list1)
-result = sol.removeDuplicates(list1)
-print('result => ', list1, ' len ', result)
-
-print('test case => ', list2)
-result = sol.removeDuplicates(list2)
-print('result => ', list2, ' len ', result)
+solution = Solution()
+solution.test()
