@@ -10,7 +10,7 @@ class Solution(object):
 
         diff_records = {}
         for k, v in enumerate(nums):
-            d = target - v # Hint 1
+            d = target - v
             if d in diff_records:
                 return [diff_records[d]+1, k+1]
             diff_records[v] = k # save v and k for next round
