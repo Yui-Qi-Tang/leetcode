@@ -1,4 +1,4 @@
-package main
+package heap
 
 import "fmt"
 
@@ -65,24 +65,17 @@ func buildMaxHeap(A []int) {
 
 }
 
-func heapSort(A []int) []int {
-	var result []int
-	for i := cap(A) - 1; i >= 1; i-- {
-		// 1. put the root(max value of the array) to A[1]
-		// 2. maxHeapify(pick next max one)
-		// and so on
-		// This does not statify in-place property QQ, because to avoid complex indexing for input Array, lol
-		result = append([]int{A[cap(A)-i]}, result...)
-		maxHeapify(A[cap(A)-i:], 1) // A.heap-size = A.head_size - 1
+func heapSort(A []int, showProcess bool) {
+	if showProcess {
+		fmt.Println("displaying sort proccess... ")
 	}
-	return result
-}
 
-func main() {
-	A := []int{0, 4, 1, 3, 2, 16, 9, 10, 14, 8, 7} // A[0] is not used!
-	fmt.Println("Input: ", A[1:])
-	buildMaxHeap(A)
-	result := heapSort(A)
-	fmt.Println("result:", result)
-
+	// cap(A) - 1: skip A[0]; i: heap-size
+	for i := cap(A) - 1; i >= 1; i-- {
+		if showProcess {
+			fmt.Println("Input:", A[1:], "heap size:", i)
+		}
+		A[1], A[i] = A[i], A[1] // let min value on heap tree root <> max-heap property
+		maxHeapify(A[:i], 1)    // A[:i]: decrease head-size via i--;  'float down' the min value XD and let the max value left the heap tree
+	}
 }

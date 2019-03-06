@@ -1,0 +1,16 @@
+kind: pipeline
+name: problem_testing
+
+clone:
+  git:
+    image: plugins/git
+    depth: 50
+    tags: true
+
+pipeline:
+  golang-simple-test:
+    image: golang:1.11
+    pull: true
+    commands:
+      - go test ./problems/sort/heap/ -v
+      - go test ./problems/sort/heap/ -bench=. -v
