@@ -13,4 +13,7 @@ pipeline:
     pull: true
     commands:
       - go test ./problems/sort/heap/ -v
+      - go test ./problems/sort/counting/ -v
       - go test ./problems/sort/heap/ -bench=. -v
+      - go test ./problems/sort/counting/ -bench=. -v
+

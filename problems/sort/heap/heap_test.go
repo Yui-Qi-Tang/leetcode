@@ -13,7 +13,7 @@ func createTestData(arraySize int) []int {
 	var list = make([]int, arraySize)
 	var prng = rand.New(rand.NewSource(int64(time.Now().Nanosecond())))
 	for i := range list {
-		list[i] = prng.Int()
+		list[i] = prng.Intn(999999)
 	}
 	return list
 }
@@ -25,7 +25,7 @@ func TestCorrectness(t *testing.T) {
 	for i := 1; i < len(A); i++ {
 		next := i + 1
 		if next >= len(A) {
-			break
+			continue
 		}
 		if A[i] > A[next] {
 			t.Fatal("Failed!")
