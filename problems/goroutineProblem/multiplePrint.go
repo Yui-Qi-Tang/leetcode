@@ -1,8 +1,7 @@
-package main
+package goroutineproblem
 
 import (
 	"fmt"
-	"runtime"
 	"strconv"
 	"sync"
 )
@@ -55,6 +54,7 @@ func printNum(c chan bool) {
 
 }
 
+/* Usage
 func main() {
 	c := make(chan bool)
 	wg.Add(2)
@@ -63,4 +63,4 @@ func main() {
 	wg.Wait()
 	runtime.Gosched()
 
-}
+}*/
