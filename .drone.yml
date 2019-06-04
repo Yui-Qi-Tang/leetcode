@@ -15,6 +15,7 @@ pipeline:
       - go test ./problems/sort/heap/ -v
       - go test ./problems/sort/counting/ -v
       - go test ./problems/1/go/ -v
+      - go test ./problems/3/go/ -v
 
       - go test ./problems/sort/heap/ -bench=. -v
       - go test ./problems/sort/counting/ -bench=. -v
