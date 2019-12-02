@@ -1,6 +1,11 @@
 package solution
 
-func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
+func findMedianSortedBinarySearch(nums1 []int, nums2 []int) float64 {
+	partition := (len(nums1) + len(nums2) + 1) / 2
+
+	partitionNums1 := (len(nums1) - 1) / 2
+	partitionNums2 := partition - partitionNums1
+
 	return 0.0
 }
 

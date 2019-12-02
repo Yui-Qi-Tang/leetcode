@@ -42,3 +42,41 @@ func TestBruteForce(t *testing.T) {
 
 	t.Log(" ...Passed")
 }
+
+func TestBinarySearch(t *testing.T) {
+
+	t.Log("Start testing binary search method...")
+
+	testForms := []TestForm{
+		TestForm{
+			nums1:  []int{1, 2, 3, 4, 20},
+			nums2:  []int{5, 6, 7, 8, 9},
+			answer: 5.5,
+		},
+
+		/*
+			TestForm{
+				nums1:  []int{1, 2},
+				nums2:  []int{3, 4},
+				answer: 2.5,
+			},
+			TestForm{
+				nums1:  []int{1, 2},
+				nums2:  []int{3},
+				answer: 2.0,
+			},*/
+	}
+
+	for i, testForm := range testForms {
+		t.Logf("test case: %d...", i)
+
+		findMedianSortedBinarySearch(testForm.nums1, testForm.nums2)
+		/*
+			if result != testForm.answer {
+				t.Fatalf("incorrect result: %0.f(answer: %0.f)\n", result, testForm.answer)
+			}*/
+		t.Log("... ok")
+	}
+
+	t.Log(" ...Passed")
+}
