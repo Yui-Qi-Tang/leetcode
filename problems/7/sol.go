@@ -73,3 +73,23 @@ func reverse(x int) int {
 	return result
 
 }
+
+// reverseBetter is an improvement of reverse function
+func reverseBetter(x int) int {
+	if outOfRange(x) {
+		return 0
+	}
+
+	result := 0 // 紀錄反轉過後的數字
+
+	for x != 0 {
+		result = result*10 + x%10 // 利用餘數除法取得最小位數的值，並將之推前一位
+		x = x / 10                // 去掉算過的位數
+	}
+
+	if outOfRange(result) {
+		return 0
+	}
+
+	return result
+}
