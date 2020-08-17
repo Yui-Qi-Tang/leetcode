@@ -1,3 +1,24 @@
+// Package solution Reverse Integer of LeetCode.
+// Problem:
+//
+// Given a 32-bit signed integer, reverse digits of an integer.
+//
+// Example 1:
+//     Input: 123
+// 	Output: 321
+//
+// Example 2:
+//     Input: -123
+// 	Output: -321
+//
+// Example 3:
+//     Input: 120
+// 	Output: 21
+//
+// [Note]:
+// 	Assume we are dealing with an environment whichcould only store integers within
+// 	the 32-bit signed integer range: '[−2^31,  2^31 − 1]'.
+// 	For the purpose of this problem, assume that your function returns 0 when the 'reversed' integer overflows.
 package solution
 
 import (
@@ -44,6 +65,7 @@ func reverse(x int) int {
 		result = result * -1
 	}
 
+	//  2020-08-17 檢查 32-bit signed integer 範圍，不只輸入要檢查，輸出的答案也要檢查(我忘記檢查輸出的範圍，導致錯了三次)。
 	if outOfRange(result) {
 		return 0
 	}
