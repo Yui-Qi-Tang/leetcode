@@ -35,7 +35,7 @@ func TestSolutionWithBetter(t *testing.T) {
 	}
 
 	for _, testcase := range testCases {
-		v := reverseBetter(testcase.input)
+		v := reverse2(testcase.input)
 
 		if v != testcase.answer {
 			t.Fatal(v, "!=", testcase.answer, "(answer)")
@@ -44,4 +44,8 @@ func TestSolutionWithBetter(t *testing.T) {
 	}
 
 	t.Log("...Passed")
+}
+
+func TestGetIntLen(t *testing.T) {
+	t.Log(getIntLen(123))
 }

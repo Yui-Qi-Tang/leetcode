@@ -93,3 +93,53 @@ func reverseBetter(x int) int {
 
 	return result
 }
+
+// the best
+func reverse2(x int) int {
+	result := 0
+
+	for x != 0 {
+		result = result*10 + x%10
+		x = x / 10
+	}
+
+	if outOfRange(result) {
+		return 0
+	}
+
+	return result
+}
+
+func getIntLen(x int) int {
+	vLen := 0
+
+	for x != 0 {
+		x = x / 10
+		vLen++
+	}
+	return vLen
+}
+
+func x10(n int) int {
+	r := 1
+	for n != 0 {
+		r *= 10
+		n--
+	}
+	return r
+
+}
+
+func reverse3(x int) int {
+	vlen := getIntLen(x)
+	result := 0
+	for vlen != 0 {
+		result = result + (x%10)*x10(vlen-1)
+		x /= 10
+		vlen--
+	}
+	if outOfRange(result) {
+		return 0
+	}
+	return result
+}
