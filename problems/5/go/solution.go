@@ -40,7 +40,9 @@ func isPalindronmic(s string) bool {
 	return true
 }
 
-func longestPalindrome(s string) string {
+// bad performance, because I check the reverse of each substring
+// n * (n - 1) * n => O(n^3)
+func badLongestPalindrome(s string) string {
 
 	if !isvalid(s) {
 		return ""
@@ -64,4 +66,54 @@ func longestPalindrome(s string) string {
 	}
 
 	return result
+}
+
+// check itself and next field
+// n * 2n => O(n^2)
+func betterLongestPalindrome(s string) string {
+
+	if !isvalid(s) {
+		return ""
+	}
+
+	if len(s) == 1 {
+		return s
+	}
+
+	if len(s) > 1000 {
+		return ""
+	}
+
+	max := 0
+	min := 0
+	sLen := len(s)
+
+	for i := 0; i < sLen; i++ {
+		prev := i
+		tail := i
+		for prev >= 0 && tail < sLen && s[prev] == s[tail] {
+			prev--
+			tail++
+		}
+
+		if tail-prev-1 > max-min {
+			max = tail
+			min = prev + 1
+		}
+
+		prev = i
+		tail = i + 1
+		for prev >= 0 && tail < sLen && s[prev] == s[tail] {
+			prev--
+			tail++
+		}
+
+		if tail-prev-1 > max-min {
+			max = tail
+			min = prev + 1
+		}
+
+	}
+
+	return s[min:max]
 }
