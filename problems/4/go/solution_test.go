@@ -15,12 +15,12 @@ func TestBruteForce(t *testing.T) {
 	t.Log("Start testing brute force method...")
 
 	testForms := []TestForm{
-		TestForm{
+		{
 			nums1:  []int{1, 2},
 			nums2:  []int{3, 4},
 			answer: 2.5,
 		},
-		TestForm{
+		{
 			nums1:  []int{1, 2},
 			nums2:  []int{3},
 			answer: 2.0,
