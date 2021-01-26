@@ -13,6 +13,13 @@ func min(a, b int) int {
 	return b
 }
 
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+
 func maxArea(height []int) int {
 
 	hLen := len(height)
@@ -27,4 +34,25 @@ func maxArea(height []int) int {
 	}
 
 	return max
+}
+
+// implemets two pointer
+func maxAreaTwoPinter(height []int) int {
+
+	hLen := len(height)
+	left := 0
+	right := hLen - 1
+	m := 0
+	for left < right {
+		hl := height[left]
+		hr := height[right]
+		m = max(m, min(hl, hr)*(right-left))
+		if height[left] < height[right] {
+			left++
+		} else {
+			right--
+		}
+	}
+
+	return m
 }
