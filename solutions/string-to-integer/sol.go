@@ -64,3 +64,73 @@ func myAtoi(str string) int {
 
 	return responseWithRange(num)
 }
+
+/*
+Runtime: 0 ms, faster than 100.00% of Go online submissions for String to Integer (atoi).
+Memory Usage: 2.3 MB, less than 100.00% of Go online submissions for String to Integer (atoi).
+
+
+Bad code here lol
+*/
+func myAtoiBetter(s string) int {
+
+	strim := strings.TrimSpace(s) // remove whitespace
+	if len(strim) == 0 {
+		return 0
+	}
+
+	sign := 1
+	countSign := 0
+	result := 0
+
+	// check if firstChar of s without whitespace
+	// expected chars := [0-9, +, -]
+	firstChar := string(strim[0])
+	if firstChar != "-" && // not equal "-" and
+		firstChar != "+" && // not equal "+" and
+		firstChar < "0" || // less than "0" ||
+		firstChar > "9" { // greater than "9"
+		// -> char does exist in expected chars
+		return 0
+	}
+
+	for i, st := range strim {
+		if string(st) >= "0" && string(st) <= "9" {
+			result = result*10 + (int(st) - int('0'))
+			// check next one is whether digit or not
+			if i+1 < len(strim) {
+				if int(strim[i+1]) < int('0') || int(strim[i+1]) > int('9') {
+					return responseWithRange(result * sign)
+				}
+			}
+		}
+
+		if string(st) == "-" {
+			if i+1 < len(strim) {
+				if int(strim[i+1]) < int('0') || int(strim[i+1]) > int('9') {
+					return 0
+				}
+			}
+			sign = -1
+			countSign++
+		} else if string(st) == "+" {
+			if i+1 < len(strim) {
+				if int(strim[i+1]) < int('0') || int(strim[i+1]) > int('9') {
+					return 0
+				}
+			}
+			sign = 1
+			countSign++
+		}
+
+		if countSign > 1 {
+			return 0
+		}
+
+		// avoid the buffer overflow
+		if result > max || result < min {
+			return responseWithRange(result * sign)
+		}
+	}
+	return responseWithRange(result * sign)
+}
