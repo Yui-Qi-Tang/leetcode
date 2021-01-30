@@ -32,18 +32,21 @@ func TestBasic(t *testing.T) {
 		input int
 		want  string
 	}{
+
 		{input: 3, want: "III"},
 		{input: 4, want: "IV"},
 		{input: 9, want: "IX"},
+		{input: 8, want: "VIII"},
 		{input: 58, want: "LVIII"},
 		{input: 1994, want: "MCMXCIV"},
 		{input: 1551, want: "MDLI"},
+		{input: 21, want: "XXI"},
 	}
 
-	for _, testcase := range testcases {
+	for i, testcase := range testcases {
 		result := intToRoman(testcase.input)
 		if result != testcase.want {
-			t.Fatal("expected:", testcase.want, "but got:", result)
+			t.Fatal("case:", i, "expected:", testcase.want, "but got:", result)
 		}
 	}
 }

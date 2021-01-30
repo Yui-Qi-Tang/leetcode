@@ -14,7 +14,7 @@ var valueSymbol map[int]string = map[int]string{
 	500:  "D",
 	1000: "M",
 
-	4:   "IX",
+	4:   "IV",
 	9:   "IX",
 	40:  "XL",
 	90:  "XC",
@@ -53,7 +53,7 @@ func intToRoman(num int) string {
 		if symbol, exist := valueSymbol[value]; exist {
 			result = symbol + result
 		} else {
-			result = toSymbol(value)
+			result = toSymbol(value) + result
 		}
 
 		// push to next number
@@ -64,16 +64,26 @@ func intToRoman(num int) string {
 	return result
 }
 
-// DP
 func toSymbol(v int) string {
+	vcopy := v
+	s := ""
+	vmod := 0
 
-	if v == 0 {
-		return ""
+	for vcopy > 0 {
+		sym, exist := valueSymbol[vcopy]
+		if exist {
+			s = s + sym
+			vcopy = vmod // just removed the diff and sync with the mod of v
+			vmod = 0
+		} else {
+			vmod++
+			vcopy--
+		}
+
+		if vcopy == 0 && vmod > 0 {
+			vcopy = vmod
+			vmod = 0
+		}
 	}
-
-	if s, ok := valueSymbol[v]; ok {
-		return s
-	}
-
-	return toSymbol(v - 1) // error
+	return s
 }
