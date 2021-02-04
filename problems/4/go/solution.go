@@ -1,5 +1,10 @@
 package solution
 
+import (
+	"math/rand"
+	"time"
+)
+
 // TODO: try to better solution
 
 /*
@@ -15,14 +20,37 @@ package solution
 	a=[1,2,3,4,5,6,8,9] the median = (4+5)/2 = 4.5 (if len(a)%2=0, (a[len(a)/2]+a[len(a)/2-1])/2)
 */
 
-func findMedianSortedBinarySearch(nums1 []int, nums2 []int) float64 {
-	/*
-		partition := (len(nums1) + len(nums2) + 1) / 2
+// binary search (submit this version for leetcode)
+func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
 
-		partitionNums1 := (len(nums1) - 1) / 2
-		partitionNums2 := partition - partitionNums1*/
+	n1Len := len(nums1)
+	n2Len := len(nums2)
+	merged := make([]int, n1Len+n2Len)
+	end := 1<<63 - 1
+	// add end to nums1 & nums2
+	nums1 = append(nums1, end)
+	nums2 = append(nums2, end)
 
-	return 0.0
+	i, j, mIndex := 0, 0, 0
+	for mIndex < len(merged) {
+		if nums1[i] <= nums2[j] {
+			merged[mIndex] = nums1[i]
+			i++
+		} else {
+			merged[mIndex] = nums2[j]
+			j++
+		}
+		mIndex++
+	}
+
+	if len(merged)%2 == 1 {
+		return float64(merged[len(merged)/2])
+	}
+
+	m1 := float64(merged[len(merged)/2])
+	m2 := float64(merged[len(merged)/2-1])
+
+	return (m1 + m2) / 2.0
 }
 
 func findMedianSortedArraysBruteForce(nums1 []int, nums2 []int) float64 {
@@ -65,60 +93,52 @@ func findMedianSortedArraysBruteForce(nums1 []int, nums2 []int) float64 {
 	return float64(merged[len(merged)/2.0])
 }
 
-func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
-
-	n1Len := len(nums1)
-	n2Len := len(nums2)
-	merged := make([]int, n1Len+n2Len)
-	end := 1<<63 - 1
-	// add end to nums1 & nums2
-	nums1 = append(nums1, end)
-	nums2 = append(nums2, end)
-
-	i, j, mIndex := 0, 0, 0
-	for mIndex < len(merged) {
-		if nums1[i] <= nums2[j] {
-			merged[mIndex] = nums1[i]
-			i++
-		} else {
-			merged[mIndex] = nums2[j]
-			j++
-		}
-		mIndex++
-	}
-
-	if len(merged)%2 == 1 {
-		return float64(merged[len(merged)/2])
-	}
-
-	m1 := float64(merged[len(merged)/2])
-	m2 := float64(merged[len(merged)/2-1])
-
-	return (m1 + m2) / 2.0
+func findMedianSortedArraysQuickSelect(nums1 []int, nums2 []int) float64 {
+	nums1 = append(nums1, nums2...)
+	return medianQuickSelect(nums1)
 }
 
-func merge(n1, n2 []int) []int {
-	if len(n1) == 0 && len(n2) == 0 {
-		return []int{}
+func medianQuickSelect(input []int) float64 {
+	if len(input)%2 == 1 {
+		return float64(quickSelect(input, len(input)/2))
+	}
+	return (float64(quickSelect(input, len(input)/2-1)) + float64(quickSelect(input, len(input)/2))) / 2.0
+}
+
+func randPivot(i []int) int {
+	rand.Seed(time.Now().UnixNano())
+	return i[rand.Intn(len(i))]
+}
+
+// k: index
+func quickSelect(l []int, k int) int {
+	if len(l) == 1 && k == 0 {
+		return l[0]
 	}
 
-	m, n := len(n1), len(n2)
-	result := make([]int, m+n)
+	pivot := randPivot(l)
 
-	n1 = append(n1, 1<<63-1)
-	n2 = append(n2, 1<<63-1)
-
-	i, j, k := 0, 0, 0
-	for k < m+n {
-		if n1[i] <= n2[j] {
-			result[k] = n1[i]
-			i++
-		} else {
-			result[k] = n2[j]
-			j++
+	// partition
+	lows := make([]int, 0)   // forall x in l, x < pivot
+	highs := make([]int, 0)  // forall x in l, x > pivot
+	pivots := make([]int, 0) // forall x in l , x == pivot
+	for _, v := range l {
+		if v < pivot {
+			lows = append(lows, v)
 		}
-		k++
+		if v > pivot {
+			highs = append(highs, v)
+		}
+		if v == pivot {
+			pivots = append(pivots, v)
+		}
 	}
 
-	return result
+	if k < len(lows) {
+		return quickSelect(lows, k)
+	} else if k < len(lows)+len(pivots) {
+		return pivots[0]
+	} else {
+		return quickSelect(highs, k-len(lows)-len(pivots))
+	}
 }
