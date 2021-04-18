@@ -21,9 +21,6 @@ func parent(i int) int {
 }
 
 func right(i int) int {
-	if i == 0 {
-
-	}
 	return i<<1 | 0x1
 }
 
