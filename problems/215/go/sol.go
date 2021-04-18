@@ -10,7 +10,6 @@ func right(i int) int {
 	return i<<1 | 0x1
 }
 
-// find the max. value and let it as root
 func maxHeapify(nums []int, i int) {
 	l := left(i)
 	r := right(i)
