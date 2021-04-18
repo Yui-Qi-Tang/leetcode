@@ -1,8 +1,12 @@
 package sol
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestBasic(t *testing.T) {
+
+	//runtime.NumCPU()
 
 	testcases := []struct {
 		input []int
