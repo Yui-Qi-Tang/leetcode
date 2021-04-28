@@ -70,6 +70,15 @@ func badLongestPalindrome(s string) string {
 
 // check itself and next field
 // n * 2n => O(n^2)
+// LaR, LaaR where L and R statisfy palindrome, and
+// base cases is
+// a  is a single char -> statify palindrome
+// aa is two single char and there are equal -> sataisfy palindrom
+// if s == basecase -> head will be back to previous one and tail goes to next one (add the checking range)
+// -> let the checking to L and R
+// L <- a/aa -> R
+// L is substring that is needed to satisfy above rule
+// R is substring that is needed to satisfy above rule
 func betterLongestPalindrome(s string) string {
 
 	if !isvalid(s) {
@@ -115,5 +124,38 @@ func betterLongestPalindrome(s string) string {
 
 	}
 
+	return s[min:max]
+}
+
+func simple(s string) string {
+
+	min, max := 0, 0
+	sLen := len(s)
+	for i := 0; i < len(s); i++ {
+		head, tail := i, i
+
+		for head >= 0 && tail < sLen && s[head] == s[tail] {
+			head--
+			tail++
+		}
+
+		if tail-head-1 > max-min {
+			max = tail
+			min = head + 1
+		}
+
+		head, tail = i, i+1
+
+		for head >= 0 && tail < sLen && s[head] == s[tail] {
+			head--
+			tail++
+		}
+
+		if tail-head-1 > max-min {
+			max = tail
+			min = head + 1
+		}
+
+	}
 	return s[min:max]
 }
