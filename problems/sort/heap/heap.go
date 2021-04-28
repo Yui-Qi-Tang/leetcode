@@ -1,7 +1,5 @@
 package heap
 
-import "fmt"
-
 /*
     head properties:
 	max-heap: A[parent(i)] >= A[i]
@@ -16,63 +14,93 @@ import "fmt"
         height of n nodes complete binary tree = thidta(lg n)
 */
 
+// floor(i/2)
 func parent(i int) int {
-	return i >> 1
+	return i / 2
 }
 
+// 2i
+func left(i int) int {
+	return i << 1
+}
+
+// 2i+1
 func right(i int) int {
 	return i<<1 | 0x1
 }
 
-func left(i int) int {
+// max-heap: A[parent(i)] >= A[i]
+func maxHeapify(array []int, i int) {
+	largestIdx := i
 
-	return i << 1
-}
-
-func maxHeapify(A []int, i int) {
-	//check which is largest one: A[i], A[l] and A[r], where l = left(i) and r = right(i)
-	var largestIndex int
-	largestIndex = i
 	l := left(i)
 	r := right(i)
 
-	// check left
-	if l < len(A) && A[l] > A[largestIndex] {
-		largestIndex = l
-	}
-	// check right
-	if r < len(A) && A[r] > A[largestIndex] {
-		largestIndex = r
+	if l < len(array) && array[l] > array[i] {
+		largestIdx = l
 	}
 
-	if largestIndex != i {
-		A[i], A[largestIndex] = A[largestIndex], A[i] // swapValue(A[i], A[largeIndex])
-		maxHeapify(A, largestIndex)                   // check the max-heap property is satified within largeIndex
+	if r < len(array) && array[r] > array[largestIdx] {
+		largestIdx = r
 	}
 
+	if i != largestIdx {
+		array[i], array[largestIdx] = array[largestIdx], array[i]
+		maxHeapify(array, largestIdx)
+	}
 }
 
-func buildMaxHeap(A []int) {
-	// For now A.heap-size = A.length
-	// i does not increse because it can not 'heapify' a larege than root node exist in children node.
-	// Heapify just check root, right and left at a recusive step.
-	for i := len(A) << 2; i > 0; i-- {
-		maxHeapify(A, i)
+// min-heap: A[parent(i)] <= A[i]
+func minHeapify(array []int, i int) {
+	smallest := i
+
+	l := left(i)
+	r := right(i)
+
+	if l < len(array) && array[l] < array[i] {
+		smallest = l
 	}
 
+	if r < len(array) && array[r] < array[smallest] {
+		smallest = r
+	}
+
+	if i != smallest {
+		array[i], array[smallest] = array[smallest], array[i]
+		minHeapify(array, smallest)
+	}
 }
 
-func heapSort(A []int, showProcess bool) {
-	if showProcess {
-		fmt.Println("displaying sort proccess... ")
+func buildMinHeapify(array []int) {
+	// (n-1) to 0
+	for i := (len(array) - 1) >> 1; i >= 0; i-- {
+		minHeapify(array, i)
 	}
+}
 
-	// cap(A) - 1: skip A[0]; i: heap-size
-	for i := cap(A) - 1; i >= 1; i-- {
-		if showProcess {
-			fmt.Println("Input:", A[1:], "heap size:", i)
-		}
-		A[1], A[i] = A[i], A[1] // let min value on heap tree root <> max-heap property
-		maxHeapify(A[:i], 1)    // A[:i]: decrease head-size via i--;  'float down' the min value XD and let the max value left the heap tree
+func buildMaxHeapify(array []int) {
+	// (n-1) to 0
+	for i := (len(array) - 1) >> 1; i >= 0; i-- {
+		maxHeapify(array, i)
+	}
+}
+
+// O(n*logn)
+func sort(array []int) {
+	buildMaxHeapify(array)
+
+	for i := len(array) - 1; i >= 1; i-- {
+		array[0], array[i] = array[i], array[0]
+		maxHeapify(array[:i], 0)
+	}
+}
+
+// O(n*lgn): improve the performance
+func minsort(array []int) {
+	buildMinHeapify(array)
+
+	for i := len(array) - 1; i >= 1; i-- {
+		array[0], array[i] = array[i], array[0]
+		minHeapify(array[:i], 0)
 	}
 }

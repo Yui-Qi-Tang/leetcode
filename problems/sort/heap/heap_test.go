@@ -2,43 +2,73 @@ package heap
 
 import (
 	"math/rand"
+	gosort "sort"
 	"testing"
 	"time"
 )
 
-// for create a big size int array
-const size int = 1000000
-
-func createTestData(arraySize int) []int {
-	var list = make([]int, arraySize)
-	var prng = rand.New(rand.NewSource(int64(time.Now().Nanosecond())))
-	for i := range list {
-		list[i] = prng.Intn(999999)
-	}
-	return list
+func randomInts(nums int) []int {
+	rand.Seed(time.Now().Unix())
+	return rand.Perm(nums)
 }
 
-func TestCorrectness(t *testing.T) {
-	A := createTestData(size) // A[0] is not used!
-	buildMaxHeap(A)
-	heapSort(A, false)
-	for i := 1; i < len(A); i++ {
-		next := i + 1
-		if next >= len(A) {
-			continue
+var testcase []int = randomInts(1000)
+
+func sortedSmallestToLargest(array []int) bool {
+	for i := 0; i < len(array)-2; i++ {
+		if array[i] > array[i+1] {
+			return false
 		}
-		if A[i] > A[next] {
-			t.Fatal("Failed!")
+	}
+
+	return true
+}
+
+func sortedLargestToSmallest(array []int) bool {
+	for i := 0; i < len(array)-2; i++ {
+		if array[i] < array[i+1] {
+			return false
 		}
+	}
+
+	return true
+}
+
+func TestHeapSortWithMaxHeapify(t *testing.T) {
+	a := randomInts(1000)
+	sort(a)
+	if !sortedSmallestToLargest(a) {
+		t.Fatal("failed to sort")
+	}
+	t.Log("passed")
+}
+
+func TestMinsort(t *testing.T) {
+	a := randomInts(1000)
+	minsort(a)
+	if !sortedLargestToSmallest(a) {
+		t.Fatal("failed to sort")
+	}
+	t.Log("passed")
+}
+
+func BenchmarkSortWithMaxHeapify(b *testing.B) {
+
+	for i := 0; i < b.N; i++ {
+		sort(testcase)
 	}
 }
 
-func BenchmarkHeap(b *testing.B) {
+func BenchmarkSortWithMinHeapify(b *testing.B) {
 
-	for n := 0; n < b.N; n++ {
-		b.StopTimer()
-		list := createTestData(size)
-		b.StartTimer()
-		heapSort(list, false)
+	for i := 0; i < b.N; i++ {
+		minsort(testcase)
+	}
+}
+
+func BenchmarkGoStdSort(b *testing.B) {
+
+	for i := 0; i < b.N; i++ {
+		gosort.Ints(testcase)
 	}
 }
