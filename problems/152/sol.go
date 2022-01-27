@@ -9,6 +9,13 @@ func maxProduct(nums []int) int {
 		v := nums[i]
 
 		if v < 0 { // +,- ; -, -
+			// nagtive integer product with small integer which is greater than big integer
+			// for example
+			// v is -1 and currMin is 1, currMax is 2
+			// --> v * 1 > v * 2
+			// v is -1 and currMin is -100; currMax is -1
+			// --> v * -100 > v * -1
+			// so, if v is negative integer we, must swap the 'max' and 'min'
 			currMax, currMin = currMin, currMax
 		}
 
