@@ -1,6 +1,8 @@
 package sol
 
-import "math"
+import (
+	"math"
+)
 
 var min int = -math.MaxInt
 
@@ -44,10 +46,10 @@ func findPeakElementv2(nums []int) int {
 
 	for left < right {
 		m := left + (right-left)/2
-		if nums[m] > nums[m+1] {
-			right = m
-		} else {
-			left = m + 1
+		if nums[m] > nums[m+1] { // win right side
+			right = m // find left part
+		} else { // lose from rigth
+			left = m + 1 // next round, left win its left-side
 		}
 	}
 
