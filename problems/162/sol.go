@@ -1,89 +1,70 @@
 package sol
 
-import (
-	"math"
-)
+/*
+cpu: Intel(R) Core(TM) i5-8250U CPU @ 1.60GHz
+BenchmarkSol1-8         186785784                6.317 ns/op           0 B/op          0 allocs/op
+BenchmarkSol2-8         158142132                7.601 ns/op           0 B/op          0 allocs/op
+BenchmarkSol3-8         171271831                7.078 ns/op           0 B/op          0 allocs/op
+*/
 
-var min int = -math.MaxInt
-
-// O(n)
+// findPeakElement returns the peak pos of the given array
+// O(logn)
 func findPeakElement(nums []int) int {
-
-	i := 0    // point of nums
-	peak := 0 // index of peak
-
-	for i < len(nums) {
-
-		p := 0
-		if i-1 < 0 {
-			p = min
-		} else {
-			p = nums[i-1]
-		}
-
-		c := nums[i]
-
-		n := 0
-		if i+1 > len(nums)-1 {
-			n = min
-		} else {
-			n = nums[i+1]
-		}
-
-		if isPeak(p, c, n) {
-			return i
-		} else {
-			i++
-		}
-	}
-	return peak
+	return sol1(nums)
 }
 
-// O(logn)
-func findPeakElementv2(nums []int) int {
+func sol1(nums []int) int {
 	left := 0
 	right := len(nums) - 1
 
 	for left < right {
-		m := left + (right-left)/2
+		m := mid(left, right)
 		if nums[m] > nums[m+1] { // win right side
 			right = m // find left part
 		} else { // lose from rigth
 			left = m + 1 // next round, left win its left-side
 		}
 	}
-
 	return left
 }
 
-func peak1d(nums []int, i, j int) int {
-	m := len(nums) / 2
-
-	p := min // point to m-1
-	if m-1 >= 0 {
-		p = nums[m-1]
-	}
-
-	c := nums[m]
-
-	n := min
-	if m+1 < len(nums) {
-		n = nums[m+1]
-	}
-
-	if p > c {
-		return peak1d(nums, i, m)
-	} else if n > c {
-		return peak1d(nums, m+1, j)
-	}
-
-	return m
-
+func sol2(nums []int) int {
+	return peakfindingLeftFirst(nums, 0, len(nums)-1)
 }
 
-func isPeak(p, c, n int) bool {
-	if c > p && c > n {
-		return true
+func sol3(nums []int) int {
+	return peakfindingRightFirst(nums, 0, len(nums)-1)
+}
+
+func peakfindingLeftFirst(nums []int, i, j int) int {
+	m := mid(i, j)
+	if m > 0 && nums[m-1] > nums[m] { // left is greater than m
+		return peakfindingLeftFirst(nums, i, m-1) // 0 to m-1
+	} else if m < len(nums)-1 && nums[m] < nums[m+1] { // right is greater than m
+		return peakfindingLeftFirst(nums, m+1, j)
 	}
-	return false
+	// nums[m] >= nums[m-1] && nums[m] >= nums[m+1]
+	return m
+}
+
+func peakfindingRightFirst(nums []int, i, j int) int {
+	m := mid(i, j)
+	if m < len(nums)-1 && nums[m] < nums[m+1] { // right is greater than m
+		return peakfindingRightFirst(nums, m+1, j) // m+1 ... j
+	} else if m > 0 && nums[m-1] > nums[m] { // left is greater than m
+		return peakfindingRightFirst(nums, i, m-1) // i ... m-1
+	}
+	// nums[m] >= nums[m-1] && nums[m] >= nums[m+1]
+	return m
+}
+
+func toPos(x int) int {
+	if x >= 0 {
+		return x
+	}
+	return -x
+}
+
+func mid(x, y int) int {
+	return (toPos(x) + toPos(y)) / 2
 }
