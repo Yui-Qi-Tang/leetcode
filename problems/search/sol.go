@@ -52,3 +52,34 @@ func max(a, b int) int {
 
 	return b
 }
+
+func search(nums []int, target int) int {
+	if len(nums) == 0 {
+		return -1
+	}
+
+	if nums[0] == target {
+		return 0
+	}
+
+	size := len(nums) - 1
+	i, j := 0, size
+
+	m := (i + j) / 2
+	if nums[m] <= target && nums[i] <= target {
+		for ii := i; ii <= m; ii++ {
+			if nums[ii] == target {
+				return ii
+			}
+		}
+	} else {
+		for ii := m; ii <= j; ii++ {
+			if nums[ii] == target {
+				return ii
+			}
+		}
+	}
+
+	return -1
+
+}
